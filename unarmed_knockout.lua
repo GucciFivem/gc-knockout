@@ -19,21 +19,23 @@ CreateThread(function()
                         SetPedToRagdoll(ped, 1000, 1000, 0, 0, 0, 0)
                         -- Time to wait
                         wait = 60
-                        QBCore.Functions.Progressbar("power_hack", "Knocked Out...", (30000), false, true, {
-                            disableMovement = true,
-                            disableCarMovement = true,
-                            disableMouse = false, 
-                            disableCombat = true,
-                        },
-                        {},
-                        {},
-                        {},
-                        function()
-                            QBCore.Functions.Notify("You're finally awake!", "success", 5000)
-                        end,
-                        function()
-                        end)                        
-                        knockedOut = true
+                        QBCore.Functions.Progressbar("knocked-out", "unconscious...", 45000, false, false, {
+                                disableMovement = true,
+                                disableCarMovement = true,
+                                disableMouse = false,
+                                disableCombat = true
+                            },
+                            {},
+                            {},
+                            {},
+                            function()
+                                -- Done
+                                QBCore.Functions.Notify("Finally you're awake!", "success", 5000)
+                            end,
+                            function()
+                            end,
+                            "fa-solid fa-face-dizzy")                     
+                      knockedOut = true
                         -- Health after knockout preferably dont make it more than 150 (50 %) because people will abuse with it {No need to go to hospital or so}
                         SetEntityHealth(ped, 140)
                     end
@@ -41,8 +43,8 @@ CreateThread(function()
             end
             if knockedOut == true then
                 --Your ped is able to die
-                SetPlayerInvincible(ped, false)
-                DisablePlayerFiring(ped, true)
+                SetPlayerInvincible(ped(), false)
+                DisablePlayerFiring(ped(), true)
                 SetPedToRagdoll(ped, 1000, 1000, 0, 0, 0, 0)
                 ResetPedRagdollTimer(ped)
                 -- Blur Cam
@@ -63,12 +65,12 @@ CreateThread(function()
                     SetTimecycleModifier("")
                     SetTransitionTimecycleModifier("")
                     -- Ped Able to die again
-                    SetPlayerInvincible(ped, false)
+                    SetPlayerInvincible(ped(), false)
                     knockedOut = false
                 end
             end
             -- Simple clear Knockout if Dead
-            if PlayerData.metadata['isdead']then
+            if PlayerData['isdead']then
                  -- Remove Konockout effect
                  SetTimecycleModifier("")
                  SetTransitionTimecycleModifier("")
@@ -77,5 +79,3 @@ CreateThread(function()
         end
     end
 )
-
-
